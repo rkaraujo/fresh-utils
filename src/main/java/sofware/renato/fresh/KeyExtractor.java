@@ -16,39 +16,24 @@ public class KeyExtractor {
         OkHttpClient client = new OkHttpClient();
 
         String url = "https://movie.freshlive.tv/manifest/275557/archive.m3u8?token=275557t22125fe85a4c59f950ea0d60e30bb11c7538&version=2&beta4k=";
+        String domain = "https://movie.freshlive.tv";
+        String outputDir = "/tmp";
 
         System.out.println("Downloading archive file");
-        //String archiveData = fetchUrlData(url, client);
-
-        String archiveData = "#EXTM3U\n" +
-                "#EXT-X-VERSION:3\n" +
-                "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=293280,CODECS=\"avc1.77.12,mp4a.40.2\",RESOLUTION=256x144\n" +
-                "/playlist/2943128.m3u8?token=275557t22125fe85a4c59f950ea0d60e30bb11c7538&version=2\n" +
-                "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=717408,CODECS=\"avc1.77.21,mp4a.40.2\",RESOLUTION=512x288\n" +
-                "/playlist/2943129.m3u8?token=275557t22125fe85a4c59f950ea0d60e30bb11c7538&version=2\n" +
-                "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1342320,CODECS=\"avc1.77.30,mp4a.40.2\",RESOLUTION=768x432\n" +
-                "/playlist/2943130.m3u8?token=275557t22125fe85a4c59f950ea0d60e30bb11c7538&version=2\n" +
-                "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2101840,CODECS=\"avc1.77.31,mp4a.40.2\",RESOLUTION=1280x720\n" +
-                "/playlist/2943131.m3u8?token=275557t22125fe85a4c59f950ea0d60e30bb11c7538&version=2\n";
+        String archiveData = fetchUrlData(url, client);
 
         String bestUri = getBestUri(archiveData);
         if (bestUri.startsWith("/")) {
-            bestUri = "https://movie.freshlive.tv" + bestUri;
+            bestUri = domain + bestUri;
         }
         System.out.println("Best URI found: " + bestUri);
 
-//        System.out.println("Fetching playlist file");
-//        String playlistFile = fetchUrlData(bestUri, client);
-//
-//        Path path = Paths.get("/tmp/original-playlist.m3u8");
-//        System.out.println("Fetching playlist file: " + path);
-//        writePlaylistToFile(playlistFile, path);
+        System.out.println("Fetching playlist file");
+        String playlistFile = fetchUrlData(bestUri, client);
 
-        String playlistFile = "#EXTM3U\n" +
-                "#EXT-X-VERSION:3\n" +
-                "#EXT-X-KEY:METHOD=AES-128,URI=\"abemafresh://abemafresh/275557t22125fe85a4c59f950ea0d60e30bb11c7538/38d40d5cbe656e4e1f20eb548363597a\",IV=0x47efc33a06b8601a7eef5445d998348d\n" +
-                "#EXT-X-MEDIA-SEQUENCE:0\n" +
-                "#EXT-X-TARGETDURATION:4";
+        Path path = Paths.get(outputDir + "/original-playlist.m3u8");
+        System.out.println("Fetching playlist file: " + path);
+        writePlaylistToFile(playlistFile, path);
 
         System.out.println("Extracting key");
         String keyUri = getKeyUri(playlistFile);

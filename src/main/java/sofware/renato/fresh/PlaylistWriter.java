@@ -11,9 +11,10 @@ public class PlaylistWriter {
 
     public static void main(String[] args) throws Exception {
         String domain = "https://movie.freshlive.tv";
+        String workdir = "/tmp";
 
-        Path originalPlaylistFile = Paths.get("/tmp/original-playlist.m3u8");
-        Path rewritePlaylistFile = Paths.get("/tmp/playlist.m3u8");
+        Path originalPlaylistFile = Paths.get(workdir + "/original-playlist.m3u8");
+        Path rewritePlaylistFile = Paths.get(workdir + "/playlist.m3u8");
 
         List<String> fileLines = Files.readAllLines(originalPlaylistFile);
         for (int i = 0; i < fileLines.size(); i++) {
@@ -26,7 +27,7 @@ public class PlaylistWriter {
 
             String outputLine = null;
             if (fileLine.startsWith("#EXT-X-KEY")) {
-                outputLine = fileLine.replaceFirst("\".*\"", "\"/tmp/program.key\"");
+                outputLine = fileLine.replaceFirst("\".*\"", "\"" + workdir + "/program.key\"");
             } else if (fileLine.startsWith("/")) {
                 outputLine = domain + fileLine;
             } else {
