@@ -34,10 +34,10 @@ public class KeyGenerator {
             for (int abemaKeyElement : abemaKey) {
                 keyByteBuffer.putInt(abemaKeyElement);
             }
+            byte[] hmacSHA256KeyBytes = keyByteBuffer.array();
 
             Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
-            byte[] array = keyByteBuffer.array();
-            SecretKeySpec hmacSHA256Key = new SecretKeySpec(array, "HmacSHA256");
+            SecretKeySpec hmacSHA256Key = new SecretKeySpec(hmacSHA256KeyBytes, "HmacSHA256");
             hmacSHA256.init(hmacSHA256Key);
             byte[] aesKey = hmacSHA256.doFinal(token.getBytes());
 
