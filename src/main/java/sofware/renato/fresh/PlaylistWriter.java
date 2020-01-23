@@ -17,13 +17,11 @@ public class PlaylistWriter {
 
         StringBuilder output = new StringBuilder();
         List<String> fileLines = Files.readAllLines(originalPlaylistFile);
-        for (int i = 0; i < fileLines.size(); i++) {
-            String fileLine = fileLines.get(i);
-
+        for (String fileLine : fileLines) {
             if (fileLine.startsWith("#EXT-X-KEY")) {
                 output.append(fileLine.replaceFirst("\".*\"", "\"" + workdir + "/program.key\""));
             } else if (fileLine.startsWith("/")) {
-                output.append(domain + fileLine);
+                output.append(domain).append(fileLine);
             } else {
                 output.append(fileLine);
             }
