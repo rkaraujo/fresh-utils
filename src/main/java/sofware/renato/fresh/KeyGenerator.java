@@ -46,8 +46,11 @@ public class KeyGenerator {
             cipher.init(Cipher.DECRYPT_MODE, aesKeySpec);
             byte[] aesBytes = cipher.doFinal(Hex.decodeHex(encryptedKey));
 
+            System.out.println("Creating key file");
             Path path = Paths.get(workdir + "/program.key");
             Files.write(path, aesBytes);
+
+            System.out.println("Finished");
         } else {
             System.out.println("Keys not found");
         }
