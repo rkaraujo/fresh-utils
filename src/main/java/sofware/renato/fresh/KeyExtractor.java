@@ -17,7 +17,7 @@ public class KeyExtractor {
 
         String url = "https://movie.freshlive.tv/manifest/275557/archive.m3u8?token=275557t22125fe85a4c59f950ea0d60e30bb11c7538&version=2&beta4k=";
         String domain = "https://movie.freshlive.tv";
-        String outputDir = "/tmp";
+        String outputDir = "E:/tmp";
 
         System.out.println("Downloading archive file");
         String archiveData = fetchUrlData(url, client);

@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 /*
-* From https://github.com/Adios/freshlive_tv_helper
+* Based on https://github.com/Adios/freshlive_tv_helper
 */
 
 'use strict'
 
 const C = require('crypto-js')
 const request = require('request')
+const fs = require('fs')
 
 if (process.argv.length < 4) {
     console.log('Usage: ' + __filename + ' ENCRYPTION_KEY_URI APPJS_URL')
@@ -35,11 +36,12 @@ request(appjs_url, (err, response, body) => {
         // inject
         eval('secret = ' + m[1])
 
-        process.stdout.write(
-            binarize16(
-                decrypt(token, secret, encrypted_key)
-            )
-        )
+        const binaryKey = binarize16( decrypt(token, secret, encrypted_key) );
+
+        fs.writeFile('E:/tmp/program.key', new Buffer(binaryKey), (err) => {
+            if (err) throw err;
+            console.log('The file has been saved!');
+        });
     }
 })
 
